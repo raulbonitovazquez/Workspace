@@ -7,7 +7,7 @@ public class AuthorizeSignResponse {
     @JsonAlias({"IsSuccess", "isSuccess"})
     private Boolean isSuccess;
 
-    @JsonAlias({"AuthorizeSignResponse", "authorizeSignResponse"})
+    @JsonAlias({"AuthorizeSignResponse", "authorizeSignResponse", "Result", "result"})
     private AuthorizeSignResult authorizeSignResponse;
 
     public Boolean getIsSuccess() {
@@ -27,15 +27,16 @@ public class AuthorizeSignResponse {
     }
 
     public boolean isAuthorized() {
-        return Boolean.TRUE.equals(isSuccess)
-                && authorizeSignResponse != null
-                && Boolean.TRUE.equals(authorizeSignResponse.getSuccess());
+        if (authorizeSignResponse == null || !Boolean.TRUE.equals(authorizeSignResponse.getSuccess())) {
+            return false;
+        }
+        return isSuccess == null || Boolean.TRUE.equals(isSuccess);
     }
 
     public String getResolvedMessage() {
         if (authorizeSignResponse != null && authorizeSignResponse.getMessage() != null) {
             return authorizeSignResponse.getMessage();
         }
-        return Boolean.TRUE.equals(isSuccess) ? "Authorized" : "Authorization rejected";
+        return Boolean.FALSE.equals(isSuccess) ? "Authorization rejected" : "Authorized";
     }
 }
