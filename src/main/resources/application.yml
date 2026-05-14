@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: dss-pades-signer
+
+firma-one:
+  authorization-url: https://api.firma-one.com/api/signing/authorize-sign
